@@ -155,7 +155,7 @@ export default function BaixasPage() {
       return;
     }
 
-    setBaixas((data as Baixa[]) ?? []);
+    setBaixas(((data ?? []) as unknown) as Baixa[]);
     setLoadingBaixas(false);
   }
 
