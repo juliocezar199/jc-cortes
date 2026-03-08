@@ -75,7 +75,7 @@ export default function FinanceiroPage() {
       return;
     }
 
-    setPedidos((data as PedidoFinanceiro[]) ?? []);
+    setPedidos(((data ?? []) as unknown) as PedidoFinanceiro[]);
     setLoadingPedidos(false);
   }
 
@@ -110,7 +110,7 @@ export default function FinanceiroPage() {
       return;
     }
 
-    setRecebimentos((data as Recebimento[]) ?? []);
+    setRecebimentos(((data ?? []) as unknown) as Recebimento[]);
     setLoadingRecebimentos(false);
   }
 
