@@ -12,7 +12,10 @@ export async function POST(req: Request) {
     }
 
     if (senha !== process.env.APP_SENHA) {
-      return NextResponse.json({ error: "Senha inválida." }, { status: 401 });
+      return NextResponse.json(
+        { error: "Senha inválida." },
+        { status: 401 }
+      );
     }
 
     const response = NextResponse.json({ ok: true });
@@ -20,12 +23,13 @@ export async function POST(req: Request) {
     response.cookies.set("jc_auth", "ok", {
       httpOnly: true,
       sameSite: "lax",
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;
+
   } catch {
     return NextResponse.json(
       { error: "Requisição inválida." },
