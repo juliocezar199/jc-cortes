@@ -96,7 +96,7 @@ export default function BaixasPage() {
       return;
     }
 
-    setPedidos((data as Pedido[]) ?? []);
+    setPedidos((data ?? []) as Pedido[]);
     setLoadingPedidos(false);
   }
 
