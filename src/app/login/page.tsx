@@ -1,10 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -14,17 +12,26 @@ export default function LoginPage() {
     setErro("");
     setCarregando(true);
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ senha }),
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ senha }),
+      });
 
-    if (res.ok) {
-      router.push("/dashboard");
-      router.refresh();
-    } else {
-      setErro("Senha incorreta.");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErro(data?.error || "Erro ao fazer login.");
+        setCarregando(false);
+        return;
+      }
+
+      window.location.href = "/dashboard";
+    } catch {
+      setErro("Erro de conexão ao tentar entrar.");
       setCarregando(false);
     }
   }
@@ -61,11 +68,12 @@ export default function LoginPage() {
         >
           JC Cortes
         </h1>
+
         <p style={{ color: "#D1D5DB", marginTop: "6px", marginBottom: "28px" }}>
           Digite a senha para entrar
         </p>
 
-        {erro ? (
+        {erro && (
           <div
             style={{
               marginBottom: "16px",
@@ -79,15 +87,14 @@ export default function LoginPage() {
           >
             {erro}
           </div>
-        ) : null}
+        )}
 
         <form onSubmit={handleSubmit} style={{ display: "grid", gap: "16px" }}>
           <div style={{ display: "grid", gap: "8px" }}>
-            <label
-              style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: 600 }}
-            >
+            <label style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: 600 }}>
               Senha
             </label>
+
             <input
               type="password"
               value={senha}
@@ -103,7 +110,6 @@ export default function LoginPage() {
                 padding: "12px 14px",
                 outline: "none",
                 fontSize: "16px",
-                boxSizing: "border-box",
               }}
             />
           </div>
