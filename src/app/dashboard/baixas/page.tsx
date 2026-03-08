@@ -118,7 +118,7 @@ export default function BaixasPage() {
       return;
     }
 
-    setPedidoItens((data as PedidoItem[]) ?? []);
+    setPedidoItens(((data ?? []) as unknown) as PedidoItem[]);
   }
 
   async function carregarBaixas() {
