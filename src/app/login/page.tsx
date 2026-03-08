@@ -29,7 +29,7 @@ export default function LoginPage() {
         return;
       }
 
-      window.location.href = "/dashboard";
+      window.location.replace("/dashboard");
     } catch {
       setErro("Erro de conexão ao tentar entrar.");
       setCarregando(false);

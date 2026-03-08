@@ -23,13 +23,12 @@ export async function POST(req: Request) {
     response.cookies.set("jc_auth", "ok", {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;
-
   } catch {
     return NextResponse.json(
       { error: "Requisição inválida." },
