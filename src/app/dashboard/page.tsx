@@ -165,10 +165,10 @@ export default function DashboardPage() {
       if (baixasRes.error) throw baixasRes.error;
       if (financeiroRes.error) throw financeiroRes.error;
 
-      setPedidos((pedidosRes.data as PedidoDashboard[]) ?? []);
-      setRecebimentos((recebimentosRes.data as Recebimento[]) ?? []);
-      setBaixas((baixasRes.data as Baixa[]) ?? []);
-      setFinanceiro((financeiroRes.data as PedidoFinanceiro[]) ?? []);
+      setPedidos(((pedidosRes.data ?? []) as unknown) as PedidoDashboard[]);
+      setRecebimentos(((recebimentosRes.data ?? []) as unknown) as Recebimento[]);
+      setBaixas(((baixasRes.data ?? []) as unknown) as Baixa[]);
+      setFinanceiro(((financeiroRes.data ?? []) as unknown) as PedidoFinanceiro[]);
     } catch (e) {
       console.error(e);
       setErro("Não foi possível carregar o dashboard.");
