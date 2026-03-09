@@ -9,6 +9,9 @@ export default function LoginPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (!senha) return;
+
     setErro("");
     setCarregando(true);
 
@@ -24,13 +27,16 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setErro(data?.error || "Erro ao fazer login.");
+        setErro(data?.error || "Senha inválida.");
         setCarregando(false);
         return;
       }
 
-      window.location.replace("/dashboard");
-    } catch {
+      // força atualização da página após login
+      window.location.href = "/dashboard";
+
+    } catch (err) {
+      console.error(err);
       setErro("Erro de conexão ao tentar entrar.");
       setCarregando(false);
     }
@@ -91,7 +97,9 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} style={{ display: "grid", gap: "16px" }}>
           <div style={{ display: "grid", gap: "8px" }}>
-            <label style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: 600 }}>
+            <label
+              style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: 600 }}
+            >
               Senha
             </label>
 
